@@ -56,10 +56,11 @@ public class CalendarService {
                 myEvent.setTitle(title);
                 myEvent.setDueDate(dueDate);
                 myEvents.add(myEvent); // Add the event to our list of custom Event objects
-                
+
                 System.out.println("Assignment: " + title);
-                System.out.println("Due: " + formatter.format(dueDate));
-                System.out.println("-------------------------");
+                System.out.println("Due: " + formatter.format(dueDate)); // This is proof of concept showing that the iCal works.
+                System.out.println("-------------------------"); // TODO: Remove this later, it's just for testing purposes
+                // TODO: make GUI to show these events in a nice way, maby a navigatable calendar view, or a list of upcoming deadlines.
             }
 
         } catch (Exception e) {
