@@ -37,7 +37,7 @@ public class CalendarService {
             ICalendar ical = biweekly.Biweekly.parse(icalData).first(); // Parse the iCal data using Biweekly and get the first calendar (there should only be one)
 
             if (ical == null) { // If parsing failed and we didn't get a calendar, print an error message and return an empty list.
-                System.out.println("No calendar data found in the response.");
+                System.out.println("No calendar data found in the response."); //TODO: Add GUI error message for this case.
                 return new ArrayList<>(); // Return an empty list if parsing failed
             }
         // TODO: 3. Loop through events (assignments)
@@ -46,7 +46,7 @@ public class CalendarService {
 
             List<VEvent> vEvents = ical.getEvents(); // Get the list of events from the calendar
 
-            System.out.println("Uppcoming deadlines:"); // Print a header for the upcoming deadlines
+            System.out.println("Uppcoming deadlines:"); // Print a header for the upcoming deadlines //TODO: Remove when GUI is implemented.
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             for (VEvent vEvent : vEvents) {
                 String title = vEvent.getSummary().getValue(); // Get the title of the event
