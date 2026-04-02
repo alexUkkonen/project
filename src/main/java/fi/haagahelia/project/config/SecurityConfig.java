@@ -37,7 +37,7 @@ public class SecurityConfig {
 
     @Bean
     public CommandLineRunner loadData(AppUserRepo repository, PasswordEncoder passwordEncoder) { // here we create a test user. the test user will be using my URL
-        return (args) -> {
+        return (args) -> { // TODO: Remove before pushing to production
             if (repository.findByUsername("testuser") == null) {
                 AppUser user = new AppUser();
                 user.setUsername("testuser");
