@@ -18,6 +18,8 @@ public class CalendarService {
 
     public List<Event> fetchEvents(String calUrl) {
 
+        List<Event> myEvents = new ArrayList<>(); // Create a list to hold our custom Event objects, we will convert the VEvent objects from Biweekly into our own Event class.
+
         try {    
             HttpClient client = HttpClient.newHttpClient(); // Create an HttpClient instance
             HttpRequest request = HttpRequest.newBuilder() // Build an HttpRequest with the moodle calendar URL
@@ -42,15 +44,18 @@ public class CalendarService {
             }
         // TODO: 3. Loop through events (assignments)
 
-            List<Event> myEvents = new ArrayList<>(); // Create a list to hold our custom Event objects, we will convert the VEvent objects from Biweekly into our own Event class.
-
             List<VEvent> vEvents = ical.getEvents(); // Get the list of events from the calendar
 
             System.out.println("Uppcoming deadlines:"); // Print a header for the upcoming deadlines //TODO: Remove when GUI is implemented.
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             for (VEvent vEvent : vEvents) {
+                
                 String title = vEvent.getSummary().getValue(); // Get the title of the event
                 Date dueDate = vEvent.getDateStart().getValue(); // Get the start date of the event, which is the due date for assignments
+
+                if (title != null && title.toLowerCase().contains("attendance")) { // This checks if the title contains the word attendance and if it does, it skips this iteration of the loop, removing all the "attendance" spam.
+                    continue;
+                }
 
                 Event myEvent = new Event();
                 myEvent.setTitle(title);
@@ -66,7 +71,7 @@ public class CalendarService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ArrayList<>(); // Return an empty list for now
+        return myEvents; // Return a list.
     }
 
 }
