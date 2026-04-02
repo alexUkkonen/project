@@ -8,12 +8,16 @@ import java.net.http.HttpResponse;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
 import biweekly.ICalendar;
 import biweekly.component.VEvent;
 
+@Service
 public class CalendarService {
 
     public List<Event> fetchEvents(String calUrl) {

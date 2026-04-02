@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Deadlines</title>
+    
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            padding: 2rem;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+        /* Container to keep the calendar from stretching too wide on large screens */
+        #calendar-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        /* Make FullCalendar event titles wrap so you can read long assignment names */
+        .fc-event-title {
+            white-space: normal !important;
+            padding: 2px;
+        }
+        .fc-event {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Upcoming Moodle Deadlines</h1>
+
+    <div id="calendar-container">
+        <div id="calendar"></div>
+    </div>
+
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Get the HTML element where the calendar goes
+            var calendarEl = document.getElementById('calendar');
+
+            // MAGIC HAPPENS HERE: Thymeleaf injects your Java List<Event> directly into JS!
+            /*<![CDATA[*/
+            var rawEvents = /*[[${events}]]*/ [];
+            /*]]>*/
+
+            // Loop through your Java events and format them the way FullCalendar likes
+            var formattedEvents = rawEvents.map(function(event) {
+                return {
+                    title: event.title,
+                    start: event.dueDate, // FullCalendar automatically understands your Java Date
+                    allDay: false,        // Keeps the specific time attached
+                    color: '#3498db'      // Nice blue color for the tasks
+                };
+            });
+
+            // Initialize the Calendar
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth', // Starts in monthly view
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,listWeek' // Lets users switch to weekly or list view!
+                },
+                events: formattedEvents, // Hand over your formatted data
+                
+                // Optional: Show a popup when you click an assignment
+                eventClick: function(info) {
+                    alert('Assignment: ' + info.event.title + '\nDue: ' + info.event.start.toLocaleString());
+                }
+            });
+
+            // Draw it on the screen
+            calendar.render();
+        });
+    </script>
+
+</body>
+</html>
