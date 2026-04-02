@@ -3,9 +3,9 @@ package fi.haagahelia.project.model;
 import jakarta.persistence.*;
 
 @Entity
-public class AppUser {
+public class AppUser { // named AppUser because User is used by some SQL stuff.
 
-    @Id
+    @Id //We create the table containing the users information.
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -13,9 +13,9 @@ public class AppUser {
     private String username;
 
     @Column(nullable = false)
-    private String passwordHash;
+    private String passwordHash; // TODO: add calendar url slot
 
-    public AppUser() {
+    public AppUser() { // Create getters and setters
         
     }
 

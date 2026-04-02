@@ -4,5 +4,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface AppUserRepo extends CrudRepository<AppUser, Long> {
 
-    AppUser findByUsername(String username);
+    AppUser findByUsername(String username); // Made the AppUser in to a repo.
 }
