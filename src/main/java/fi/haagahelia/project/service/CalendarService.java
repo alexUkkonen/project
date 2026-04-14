@@ -41,33 +41,13 @@ public class CalendarService {
             ICalendar ical = biweekly.Biweekly.parse(icalData).first(); // Parse the iCal data using Biweekly and get the first calendar (there should only be one)
 
             if (ical == null) { // If parsing failed and we didn't get a calendar, print an error message and return an empty list.
-                System.out.println("No calendar data found in the response."); //TODO: Add GUI error message for this case.
+                System.out.println("No calendar data found in the response.");
                 return new ArrayList<>(); // Return an empty list if parsing failed
             }
 
             List<VEvent> vEvents = ical.getEvents(); // Get the list of events from the calendar
 
-            System.out.println("Uppcoming deadlines:"); // Print a header for the upcoming deadlines //TODO: Remove when GUI is implemented.
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            for (VEvent vEvent : vEvents) {
-                
-                String title = vEvent.getSummary().getValue(); // Get the title of the event
-                Date dueDate = vEvent.getDateStart().getValue(); // Get the start date of the event, which is the due date for assignments
-
-                if (title != null && title.toLowerCase().contains("attendance")) { // This checks if the title contains the word attendance and if it does, it skips this iteration of the loop, removing all the "attendance" spam.
-                    continue;
-                }
-
-                Event myEvent = new Event();
-                myEvent.setTitle(title);
-                myEvent.setDueDate(dueDate);
-                myEvents.add(myEvent); // Add the event to our list of custom Event objects
-
-                System.out.println("Assignment: " + title);
-                System.out.println("Due: " + formatter.format(dueDate)); // This is proof of concept showing that the iCal works.
-                System.out.println("-------------------------"); // TODO: Remove this later, it's just for testing purposes
-                // TODO: make GUI to show these events in a nice way, maby a navigatable calendar view, or a list of upcoming deadlines.
-            }
+            
 
         } catch (Exception e) {
             e.printStackTrace();
