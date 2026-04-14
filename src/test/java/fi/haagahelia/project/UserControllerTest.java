@@ -30,7 +30,7 @@ public class UserControllerTest {
         repository = mock(AppUserRepo.class);
         passwordEncoder = mock(PasswordEncoder.class);
         encryptionUtil = mock(EncryptionUtil.class);
-        controller = new UserController(repository, passwordEncoder, encryptionUtil);
+        controller = new UserController(repository, passwordEncoder, encryptionUtil, mock(fi.haagahelia.project.repository.PasswordResetTokenRepo.class));
     }
 
     @Test

@@ -60,7 +60,23 @@
             <input type="url" id="newMoodleUrl" name="newMoodleUrl" th:value="${currentUrl}" required>
             
             <button type="submit">Save Changes</button>
+
+            
         </form>
+
+        <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
+        
+        <div style="text-align: center;">
+            <h3 style="color: #e74c3c; margin-bottom: 10px;">Danger Zone</h3>
+            <p style="font-size: 0.9em; color: #7f8c8d; margin-bottom: 15px;">Once you delete your account, there is no going back. Please be certain.</p>
+            
+            <form action="/settings/delete" method="post" onsubmit="return confirm('Are you absolutely sure you want to delete your account? This action cannot be undone.');">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                <button type="submit" style="background: #e74c3c;">Permanently Delete Account</button>
+            </form>
+        </div>
+
+        <br>
 
         <a href="/calendar" class="back-link">← Back to Calendar</a>
     </div>

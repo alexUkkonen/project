@@ -7,11 +7,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.ServletException;
+
 import java.security.Principal;
 
 import fi.haagahelia.project.config.EncryptionUtil;
 import fi.haagahelia.project.model.AppUser;
 import fi.haagahelia.project.repository.AppUserRepo;
+import fi.haagahelia.project.repository.PasswordResetTokenRepo;
+import fi.haagahelia.project.model.PasswordResetToken;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -21,11 +27,13 @@ public class UserController {
     private final AppUserRepo repository;
     private final PasswordEncoder passwordEncoder;
     private final EncryptionUtil encryptionUtil;
+    private final PasswordResetTokenRepo tokenRepo;
 
-    public UserController(AppUserRepo repository, PasswordEncoder passwordEncoder, EncryptionUtil encryptionUtil) {
+    public UserController(AppUserRepo repository, PasswordEncoder passwordEncoder, EncryptionUtil encryptionUtil, PasswordResetTokenRepo tokenRepo) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
         this.encryptionUtil = encryptionUtil;
+        this.tokenRepo = tokenRepo;
     }
 
     @GetMapping("/login")
@@ -102,6 +110,22 @@ public class UserController {
         return "redirect:/calendar";
     }
     
+    @PostMapping("/settings/delete")
+    public String deleteAccount(Principal principal, HttpServletRequest request) throws ServletException {
+        
+        AppUser user = repository.findByUsername(principal.getName());
+
+        PasswordResetToken token = tokenRepo.findByUser(user); // Find any password reset tokens associated with the user
+        if (token != null) {
+            tokenRepo.delete(token); // Delete any associated password reset tokens for the user to prevent crashes after the user account is deleted
+        }
+
+        repository.delete(user); // Delete the user account from the database
+
+        request.logout(); // Log out the user after deleting the account
+        
+        return "redirect:/login?accountDeleted"; // Redirect to the login page with a message indicating the account was deleted
+    }
     
     
     
