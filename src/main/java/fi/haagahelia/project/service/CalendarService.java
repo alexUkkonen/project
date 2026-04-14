@@ -31,8 +31,6 @@ public class CalendarService {
                     .build(); // This finishes the building of the request.
             
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString()); // Send the request and get the response as a String (This includes status code and body)
-
-        // TODO: 2. Parse the iCal data using the Biweekly library
         
             if (response.statusCode() != 200) { // 200 is the status code for a successful HTTP request, if it's not 200, we print an error message and return an empty list.
                 System.out.println("Failed to fetch calendar data. Status code: " + response.statusCode());
@@ -46,7 +44,6 @@ public class CalendarService {
                 System.out.println("No calendar data found in the response."); //TODO: Add GUI error message for this case.
                 return new ArrayList<>(); // Return an empty list if parsing failed
             }
-        // TODO: 3. Loop through events (assignments)
 
             List<VEvent> vEvents = ical.getEvents(); // Get the list of events from the calendar
 

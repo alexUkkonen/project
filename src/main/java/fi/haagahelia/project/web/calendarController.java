@@ -4,27 +4,39 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 
+import java.security.Principal;
 import java.util.List;
 
 import fi.haagahelia.project.model.Event;
-import fi.haagahelia.project.service.*;
+import fi.haagahelia.project.model.AppUser;
+import fi.haagahelia.project.repository.AppUserRepo;
+import fi.haagahelia.project.service.CalendarService;
 
 
 @Controller
 public class calendarController {
 
     private final CalendarService calendarService;
+    private final AppUserRepo appUserRepo;
 
-    public calendarController(CalendarService calendarService) {
+    public calendarController(CalendarService calendarService, AppUserRepo appUserRepo) {
         this.calendarService = calendarService;
+        this.appUserRepo = appUserRepo;
     }
 
     @GetMapping("/calendar")
-    public String showChalendar(Model model) {
+    public String showChalendar(Model model, Principal principal) {
 
-        // TODO: change to a class bound to user.
-        String userMoodleUrl = "https://hhmoodle.haaga-helia.fi/calendar/export_execute.php?userid=86119&authtoken=8ef7ead9d6c135dae7ef931f57bd8768ac262d82&preset_what=courses&preset_time=custom";
+        // get username of logged in user
+        String currentUsername = principal.getName();
 
+        // find the user in database
+        AppUser currentUser = appUserRepo.findByUsername(currentUsername);
+
+        //get attatched moodle URL
+        String userMoodleUrl = currentUser.getMoodleUrl();
+
+        //grab the events from the list.
         List<Event> upcomingEvents = calendarService.fetchEvents(userMoodleUrl);
 
         model.addAttribute("events", upcomingEvents);

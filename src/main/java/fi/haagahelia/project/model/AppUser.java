@@ -13,7 +13,29 @@ public class AppUser { // named AppUser because User is used by some SQL stuff.
     private String username;
 
     @Column(nullable = false)
-    private String passwordHash; // TODO: add calendar url slot
+    private String passwordHash; 
+
+    @Column(nullable = false)
+    private String email;
+
+    @Column(length = 1000)
+    private String moodleUrl;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getMoodleUrl() {
+        return moodleUrl;
+    }
+
+    public void setMoodleUrl(String moodleURL) {
+        this.moodleUrl = moodleURL;
+    }
 
     public AppUser() { // Create getters and setters
         

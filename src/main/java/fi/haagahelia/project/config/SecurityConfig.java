@@ -6,10 +6,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.boot.CommandLineRunner;
-
-import fi.haagahelia.project.repository.AppUserRepo;
-import fi.haagahelia.project.model.AppUser;
 
 @Configuration
 public class SecurityConfig {
@@ -33,18 +29,5 @@ public class SecurityConfig {
             .logout(logout -> logout.permitAll());
         
         return http.build();
-    }
-
-    @Bean
-    public CommandLineRunner loadData(AppUserRepo repository, PasswordEncoder passwordEncoder) { // here we create a test user. the test user will be using my URL
-        return (args) -> { // TODO: Remove before pushing to production
-            if (repository.findByUsername("testuser") == null) {
-                AppUser user = new AppUser();
-                user.setUsername("testuser");
-                user.setPasswordHash(passwordEncoder.encode("password123"));
-                repository.save(user);
-                System.out.println("--- Test user 'testuser' with password 'password123' created! ---");
-            }
-        };
     }
 }
