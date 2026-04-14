@@ -56,17 +56,17 @@ public class UserController {
 
         //Do passowrds match?
         if (!password.equals(confirmPassword)) {
-            return "redirect:/register?error=Passwords do nor match!";
+            return "redirect:/register?error=Passwords do nor match!"; // If the password and confirm password do not match, we redirect the user back to the registration page with an error message.
         }
 
         //Password strength check. Is it long enough?
         if (password.length() < 8) {
-            return "redirect:/register?error=passowrd must be at least 8 characters long";
+            return "redirect:/register?error=passowrd must be at least 8 characters long"; // If the password is too short, we redirect the user back to the registration page with an error message.
         }
     
         //Check to see if user is taken
         if (repository.findByUsername(username) != null) {
-            return "redirect:/register?error username taken";
+            return "redirect:/register?error=Username taken"; // If the username is already taken, we redirect the user back to the registration page with an error message.
         }
 
         AppUser newUser = new AppUser();
@@ -104,7 +104,7 @@ public class UserController {
         
         AppUser user = repository.findByUsername(principal.getName());
 
-        user.setMoodleUrl(encryptionUtil.encrypt(newMoodleUrl));
+        user.setMoodleUrl(encryptionUtil.encrypt(newMoodleUrl)); // we encrypt the new URL and set it as the user's new moodle URL, this will ensure that the URL is stored securely in the database.
         repository.save(user);
         
         return "redirect:/calendar";

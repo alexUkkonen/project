@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .defaultSuccessUrl("/calendar", true) //redirects any logged in user to /calendar
                 .permitAll()
             )
-            .logout(logout -> logout.permitAll());
+            .logout(logout -> logout.permitAll()); // This allows anyone to access the logout functionality, which is important for users to be able to log out of their accounts.
         
         return http.build();
     }

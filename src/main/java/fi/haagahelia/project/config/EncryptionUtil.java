@@ -20,7 +20,7 @@ public class EncryptionUtil {
     // make it run on startupp
     @PostConstruct
     public void init() {
-        this.keyBytes = Base64.getDecoder().decode(base64Key);
+        this.keyBytes = Base64.getDecoder().decode(base64Key); //We decode the base64 key to get the actual bytes we will use for encryption and decryption
     }
 
     public String encrypt(String value) {

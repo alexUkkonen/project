@@ -44,6 +44,25 @@ public class CalendarService {
 
             List<VEvent> vEvents = ical.getEvents(); // Get the list of events from the calendar
 
+            for (VEvent vEvent : vEvents) {
+                String title = vEvent.getSummary() != null ? vEvent.getSummary().getValue() : "Untitled Event"; // Get the title of the event, if it's null, use "Untitled Event" as a default title.
+                java.util.Date dueDate = vEvent.getDateStart() != null ? vEvent.getDateStart().getValue() : null; // Get the start date of the event, if it's null, use null as the due date.
+
+                if (title.toLowerCase().contains("attendance")) { //if the title contains "attendance", we skip this event, as it's not a deadline.
+                    continue;
+                }
+
+                // Create the event and add it to the list!
+                if (dueDate != null) {
+                    Event myEvent = new Event(); // Create a new instance of our custom Event class
+                    myEvent.setTitle(title); // Set the title of our Event to the title we got from the VEvent
+                    myEvent.setDueDate(dueDate); // Set the due date of our Event to the start date we got from the VEvent (Moodle calendar events use the start date as the deadline)
+                    myEvents.add(myEvent); // Add our Event to the list of events we will return
+                }
+            }
+
+        } catch (Exception e) {            
+
             
 
         } catch (Exception e) {
