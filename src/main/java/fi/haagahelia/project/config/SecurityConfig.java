@@ -23,6 +23,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated() // with this we make it so that anything else requires you to be logged in (authenticated)
             )
             .formLogin(form -> form
+                .loginPage("/login")
                 .defaultSuccessUrl("/calendar", true) //redirects any logged in user to /calendar
                 .permitAll()
             )

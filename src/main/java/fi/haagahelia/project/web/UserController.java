@@ -28,6 +28,12 @@ public class UserController {
         this.encryptionUtil = encryptionUtil;
     }
 
+    @GetMapping("/login")
+    public String showLoginForm() {
+        return "login";
+    }
+    
+
     @GetMapping("/register")
     public String showRegistrationForum() {
         return "register";
