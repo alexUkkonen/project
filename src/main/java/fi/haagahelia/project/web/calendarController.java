@@ -8,6 +8,7 @@ import java.security.Principal;
 import java.util.List;
 
 import fi.haagahelia.project.model.Event;
+import fi.haagahelia.project.config.EncryptionUtil;
 import fi.haagahelia.project.model.AppUser;
 import fi.haagahelia.project.repository.AppUserRepo;
 import fi.haagahelia.project.service.CalendarService;
@@ -18,10 +19,12 @@ public class calendarController {
 
     private final CalendarService calendarService;
     private final AppUserRepo appUserRepo;
+    private final EncryptionUtil encryptionUtil;
 
-    public calendarController(CalendarService calendarService, AppUserRepo appUserRepo) {
+    public calendarController(CalendarService calendarService, AppUserRepo appUserRepo, EncryptionUtil encryptionUtil) {
         this.calendarService = calendarService;
         this.appUserRepo = appUserRepo;
+        this.encryptionUtil = encryptionUtil;
     }
 
     @GetMapping("/calendar")
@@ -36,8 +39,11 @@ public class calendarController {
         //get attatched moodle URL
         String userMoodleUrl = currentUser.getMoodleUrl();
 
+        //Decrypt the Url
+        String decryptedUrl = encryptionUtil.decrypt(userMoodleUrl);
+
         //grab the events from the list.
-        List<Event> upcomingEvents = calendarService.fetchEvents(userMoodleUrl);
+        List<Event> upcomingEvents = calendarService.fetchEvents(decryptedUrl);
 
         model.addAttribute("events", upcomingEvents);
 
