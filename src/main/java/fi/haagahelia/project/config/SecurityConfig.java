@@ -19,7 +19,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/register", "/login").permitAll() // This permits anyone to access /register and /login
+                .requestMatchers("/register", "/login", "/forgot-password", "/reset-password").permitAll() // This permits anyone to access /register and /login
                 .anyRequest().authenticated() // with this we make it so that anything else requires you to be logged in (authenticated)
             )
             .formLogin(form -> form
