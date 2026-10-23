@@ -25,6 +25,7 @@ public class CalendarService {
             HttpClient client = HttpClient.newHttpClient(); // Create an HttpClient instance
             HttpRequest request = HttpRequest.newBuilder() // Build an HttpRequest with the moodle calendar URL
                     .uri(URI.create(calUrl)) // URI is the bucket term that encompases URL and URN, but since we are using HttpClient it will almoust allways be a URL.
+                    .timeout(java.time.Duration.ofSeconds(10)) // Set a timeout of 10 seconds for the request, if it takes longer than that, it will throw an exception. This is to prevent the application from hanging indefinitely if the server is slow or unresponsive.
                     .build(); // This finishes the building of the request.
             
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString()); // Send the request and get the response as a String (This includes status code and body)

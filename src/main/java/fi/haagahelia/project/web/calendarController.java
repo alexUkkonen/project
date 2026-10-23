@@ -40,6 +40,11 @@ public class calendarController {
         String userMoodleUrl = currentUser.getMoodleUrl();
 
         //Decrypt the Url
+        if (userMoodleUrl == null) {
+            model.addAttribute("error", "No Moodle URL found for the user.");
+            return "calendar"; // Return the calendar view with an error message
+        }
+        
         String decryptedUrl = encryptionUtil.decrypt(userMoodleUrl);
 
         //grab the events from the list.

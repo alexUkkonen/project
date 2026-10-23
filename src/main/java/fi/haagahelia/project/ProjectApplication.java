@@ -13,14 +13,5 @@ import java.util.List;
 public class ProjectApplication {
 
 
-	public static void main(String[] args) {
-		SpringApplication.run(ProjectApplication.class, args);
-
-		String calUrl = "";
-
-		CalendarService calendarService = new CalendarService();
-		List<Event> events = calendarService.fetchEvents(calUrl);
-
-	}
 
 }

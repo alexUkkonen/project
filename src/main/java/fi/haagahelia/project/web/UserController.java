@@ -69,6 +69,11 @@ public class UserController {
             return "redirect:/register?error=Username taken"; // If the username is already taken, we redirect the user back to the registration page with an error message.
         }
 
+        //Check to see if Url is valid
+        if (moodleUrl == null || !moodleUrl.startsWith("https://hhmoodle.haaga-helia.fi/calendar")) {
+            return "redirect:/register?error=Invalid Moodle URL"; // If the Moodle URL is invalid, we redirect the user back to the registration page with an error message.
+        }
+
         AppUser newUser = new AppUser();
         newUser.setUsername(username);
         newUser.setEmail(email);

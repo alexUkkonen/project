@@ -3,6 +3,7 @@ package fi.haagahelia.project.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import fi.haagahelia.project.model.AppUser;
@@ -21,12 +22,14 @@ public class PasswordResetController {
     private final PasswordResetTokenRepo tokenRepo;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final String appBaseUrl;
 
-    public PasswordResetController(AppUserRepo userRepo, PasswordResetTokenRepo tokenRepo, PasswordEncoder passwordEncoder, EmailService emailService) {
+    public PasswordResetController(AppUserRepo userRepo, PasswordResetTokenRepo tokenRepo, PasswordEncoder passwordEncoder, EmailService emailService, @Value("${app.base-url}") String appBaseUrl) {
         this.userRepo = userRepo;
         this.tokenRepo = tokenRepo;
         this.passwordEncoder = passwordEncoder;
         this.emailService = emailService;
+        this.appBaseUrl = appBaseUrl;
     }
 
     @GetMapping("/forgot-password")
@@ -51,7 +54,7 @@ public class PasswordResetController {
             resetToken.setExpiryDate(LocalDateTime.now().plusMinutes(15)); // we set the expiry date to 15 minutes from now
             tokenRepo.save(resetToken); // we save the token to the database
 
-            String resetUrl = "http://localhost:8080/reset-password?token=" + token; // we create the reset URL that will be sent to the user, this URL contains the token as a query parameter, which will be used to identify the token when the user clicks the link in the email.
+           String resetUrl = appBaseUrl + "/reset-password?token=" + token; // we create the reset URL that will be sent to the user, this URL contains the token as a query parameter, which will be used to identify the token when the user clicks the link in the email.
             
             try {
                 emailService.sendPasswordResetEmail(user.getEmail(), resetUrl); // we use the email service to send the password reset email to the user, this method will need to be implemented in the EmailService class, and it should use JavaMailSender to send the email.

@@ -10,7 +10,7 @@ import java.util.Base64;
 @Component
 public class EncryptionUtil {
 
-    private static final String ALGORITHM = "AES"; //we define the algorithm we will be using.
+    private static final String ALGORITHM = "AES-GCM"; //we define the algorithm we will be using.
 
     @Value("${app.security.encryption.key}") //We tell it to use the key we stored in application propperties
     private String base64Key;
